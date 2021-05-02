@@ -1,0 +1,9 @@
+{% extends 'home.html' %}
+{%block content%}
+<h4><a href="/dashboard">Dashboard</a></h4> <br />
+<h1>These are your stats</h1>
+
+<h4>Total wishes granted so far for all users: {{granted_count_all}}</h4> <br/>
+<p>Your granted wishes: {{granted_count}}</p>
+<p>Your pending wishes: {{pending_count}}</p>
+{% endblock %}

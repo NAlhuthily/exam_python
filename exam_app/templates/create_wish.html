@@ -1,0 +1,32 @@
+{% extends 'home.html' %}
+{% block content %}
+{%if messages %}
+        <div class="alert alert-primary" role="alert">
+            <ul>
+                {% for msg in messages %}
+                {% ifequal 'error' msg.tags %}
+                <li class="text-danger"> {{msg}} </li>
+                {%else%}
+                <li class="text-success"> {{msg}} </li>
+                {% endifequal %}
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+<!-- <div class="row">
+    <div class="col-md-6"> -->
+        <form action="/create_wish" method="POST">
+            {% csrf_token %}
+            <h2>Make a Wish</h2>
+            <div class="form-group">
+                <label for="inputEmail3" class="col-md-2 col-form-label">I wish for:</label>
+                <input type="text" class="form-control" name="item">
+            </div>
+            <div class="form-group">
+                <label for="inputEmail3" class="col-md-2 col-form-label">Description</label>
+                <textarea class="form-control" name="desc"></textarea>
+            </div>
+                <button type="submit" class="btn btn-primary mt-4">Submit</button>
+                <a href="/dashboard" class="btn btn-outline-danger">Cancel</a>
+        </form>
+{% endblock %}

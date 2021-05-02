@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous" />
+    <!-- <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+        crossorigin="anonymous"
+    /> -->
+    <title>Document</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-dark bg-primary">
+        <a href="/dashboard">
+            <h4 class="text-white">Welcome {{user.first_name}} </h4>
+        </a>
+        <div class="navbar-right row ">
+            <a class="nav-link text-white" href="/logout">Logout</a>
+        </div>
+    </nav>
+    <div class="container">
+        {% block content %}
+        {%if messages %}
+        <div class="alert alert-primary" role="alert">
+            <ul>
+                {% for msg in messages %}
+                {% ifequal 'error' msg.tags %}
+                <li class="text-danger"> {{msg}} </li>
+                {%else%}
+                <li class="text-success"> {{msg}} </li>
+                {% endifequal %}
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+        <a href="/wishes/new" class="btn btn-primary mt-4">Make a wish!</a>
+        <a href="/wishes/stats" class="btn btn-primary mt-4">View stats</a>
+        <div class="container">
+            <h1>Your wish list:</h1>
+            <table class="table">
+                <thead>
+                    <th>Item</th>
+                    <th>Date added</th>
+                    <th>Actions</th>
+                </thead>
+                <tbody>
+                    {%for i in all_wish_revers %}
+                    {% if not i.granted %}
+                    <tr>
+                        <td>{{i.item}}</td>
+                        <td>{{i.date_added}}</td>
+                        <td>
+                            <a href="/wishes/delete/{{i.id}}">Remove</a> |
+                            <a href="/wishes/edit/{{i.id}}">Edit</a> |
+                            <a href="/granted/{{i.id}}">Granted</a>
+                        </td>
+                    </tr>
+                    {%endif%}
+                    {%endfor%}
+                </tbody>
+            </table>
+            <!-- 2 -->
+            <h1>Granted wishes:</h1>
+            <table class="table">
+                <thead>
+                    <th>Item</th>
+                    <th>Wisher</th>
+                    <th>Date added</th>
+                    <th>Date Granted</th>
+                    <th>Likes</th>
+                    <th>Actions</th>
+                </thead>
+                <tbody>
+                    {%for i in all_wish %}
+                    {% if i.granted %}
+                    <tr>
+                        <td>{{i.item}}</td>
+                        <td>{{i.wisher.first_name}}</td>
+                        <td>{{i.date_added}}</td>
+                        <td>{{i.date_granted}}</td>
+                        <td>
+                            
+                            {{ i.user_who_like.all.count}}
+                            
+                        </td>
+                        <td>
+                            {%if not user in i.user_who_like.all and user.id != i.wisher.id %}
+                            <a href="/wishes/like/{{i.id}}">Like</a>
+                            {%endif%}
+                        </td>
+                    </tr>
+                    {%endif %}
+                    {%endfor%}
+                </tbody>
+            </table>
+        </div>
+        {%endblock %}
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
